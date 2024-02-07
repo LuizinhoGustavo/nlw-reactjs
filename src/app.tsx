@@ -1,8 +1,52 @@
+import { ChangeEvent, useState } from 'react'
 import logo from './assets/logoNLW.svg' // No React podemos importar o vetor (svg) dessa forma e apenas coloca-lo no projeto de maneira mais fácil com a tab 'img'
 import { NewNoteCard } from './components/new-note-card'
 import { NoteCard } from './components/note-card'
 
+interface Note {
+  id: string
+  date: Date
+  content: string
+  
+}
+
 export function App() { //Retona de maneira mais fácil
+  const [search, setSearch] = useState('')
+  const [notes, setNotes] = useState<Note[]>(() => {
+    const notesOnStorage = localStorage.getItem('notes')
+
+    if (notesOnStorage){
+      return JSON.parse(notesOnStorage)
+    }
+
+    return []
+  }) /* Array com as notas */
+
+  function onNoteCreated(content: string){
+    const newNote = {
+      id: crypto.randomUUID(),
+      date: new Date(),
+      content,
+    }
+
+    const notesArray = [newNote, ...notes]
+
+    setNotes(notesArray)
+
+    localStorage.setItem('notes', JSON.stringify(notesArray)) /* Converte o array em Texto para salvar no navegador */
+  }
+
+  function HandleSearch(event: ChangeEvent<HTMLInputElement>){
+    const query = event.target.value
+
+    setSearch(query)
+
+  }
+
+  const filteredNotes = search != ''
+  ? notes.filter(note => note.content.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+  :notes
+
   return( 
     // No react nao podemos colocar 2 elementos em baixo do outro se eles não tiverem envoltos por uma tag meior, como uma div.
     <div className="mx-auto max-w-6xl my-12 space-y-6">
@@ -13,6 +57,7 @@ export function App() { //Retona de maneira mais fácil
           type="text" 
           placeholder='Busque Suas Notas'
           className='w-full bg-transparent text-3xl font-semibold tracking-tight outline-none placeholder:text-slate-500'
+          onChange={HandleSearch}
           />
       </form>
 
@@ -20,11 +65,11 @@ export function App() { //Retona de maneira mais fácil
 
       <div className='grid grid-cols-3 gap-6 auto-rows-[250px]'>
 
-        <NewNoteCard/>
+        <NewNoteCard onNoteCreated={onNoteCreated} />
 
-        <NoteCard  note={{
-          date: new Date(),
-          content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus aliquid earum quasi error tempore animi cupiditate, quod reiciendis, accusamus aperiam possimus aspernatur officia quia? Cum, tempore. Explicabo dolore atque illo?"}} /> {/*Import do Component, e mudança das características em cada um dos components*/}
+        {filteredNotes.map(note =>{ /*leitura da o array de Notas para criação do elemento */
+          return < NoteCard key={note.id} note={note} />
+        })}
 
       </div>
     </div>
