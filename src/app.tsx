@@ -1,4 +1,5 @@
 import logo from './assets/logoNLW.svg' // No React podemos importar o vetor (svg) dessa forma e apenas coloca-lo no projeto de maneira mais fácil com a tab 'img'
+import { NewNoteCard } from './components/new-note-card'
 import { NoteCard } from './components/note-card'
 
 export function App() { //Retona de maneira mais fácil
@@ -19,12 +20,7 @@ export function App() { //Retona de maneira mais fácil
 
       <div className='grid grid-cols-3 gap-6 auto-rows-[250px]'>
 
-        <div className='rouded-md bg-slate-700 p-5 space-y-3'>
-          <span className='text-sm font-medium text-slate-200'>Adicionar nota</span>
-          <p className='text-sm leading-6 text-slate-400'>
-            Grave uma nota em áudio que será convertida para texto automaticamente.
-          </p>
-        </div>
+        <NewNoteCard/>
 
         <NoteCard  note={{
           date: new Date(),

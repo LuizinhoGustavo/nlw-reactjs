@@ -8,3 +8,4 @@
 * TailWind CSS
 * TypeScript
 * Radix
+* date-fns
