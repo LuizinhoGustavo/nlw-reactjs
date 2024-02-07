@@ -26,10 +26,11 @@ export function App() { //Retona de maneira mais fácil
           </p>
         </div>
 
-        <NoteCard/> {/*Importação do Component*/}
+        <NoteCard  note={{
+          date: new Date(),
+          content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus aliquid earum quasi error tempore animi cupiditate, quod reiciendis, accusamus aperiam possimus aspernatur officia quia? Cum, tempore. Explicabo dolore atque illo?"}} /> {/*Import do Component, e mudança das características em cada um dos components*/}
 
       </div>
-
     </div>
     )//Componentes JSX - HTML convertido para JS
 }
