@@ -5,12 +5,14 @@ import { X } from 'lucide-react'
 
 interface NoteCardProps{ // Explicação no final
   note: {
+    id: string
     date: Date
     content: string
   }
+  onNoteDeleted: (id: string) => void
 }
 
-export function NoteCard({ note }: NoteCardProps){ // Chama a interface e criar o recurso Props
+export function NoteCard({ note, onNoteDeleted }: NoteCardProps){ // Chama a interface e criar o recurso Props
     return(
       <Dialog.Root>
           <Dialog.Trigger className='flex flex-col rouded-md text-left bg-slate-800 p-5 gap-3 overflow-hidden outline-none relative hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400'>
@@ -26,7 +28,7 @@ export function NoteCard({ note }: NoteCardProps){ // Chama a interface e criar 
 
           <Dialog.Portal> {/*Ao criar o element ele redireciona ele para o body da página e não segue o grid, por exemplo*/}
             <Dialog.Overlay className="inset-0 fixed bg-black/40"> {/* Overlay é o fundo do modal, que faz o efeito que o Modal está em cima do conteúdo*/}
-              <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-slate-700 rounded-md max-w-[640px] w-full h-[60vh] flex flex-col"> {/*Conteúdo que vai ser gerado ao presionar o trigger*/}
+              <Dialog.Content className="fixed inset-0 md:inset-auto md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 overflow-hidden bg-slate-700 md:rounded-md max-w-[640px] w-full md:h-[60vh] flex flex-col"> {/*Conteúdo que vai ser gerado ao presionar o trigger*/}
                 <Dialog.Close className="absolute right-0 top-0 bg-slate-800 p-1.5 text-slate-400 hover:text-slate-100">
                   < X className="size-5"/> {/* Size - coloca tanto o Width quanto o Height para o mesmo tamanho */}
                 </Dialog.Close>
@@ -40,7 +42,7 @@ export function NoteCard({ note }: NoteCardProps){ // Chama a interface e criar 
                   </p>
                 </div>
 
-                <button type="button" className="w-full bg-slate-800 py-4 text-center text-sm text-slate-300 outline-none font-medium group">Deseja <span className="text-red-400 group-hover:underline">apagar esse nota?</span></button>
+                <button type="button" onClick={() => onNoteDeleted(note.id)} className="w-full bg-slate-800 py-4 text-center text-sm text-slate-300 outline-none font-medium group">Deseja <span className="text-red-400 group-hover:underline">apagar esse nota?</span></button>
               </Dialog.Content>
             </Dialog.Overlay>
           </Dialog.Portal>
